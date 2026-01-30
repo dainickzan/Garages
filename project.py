@@ -1,6 +1,5 @@
-import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QFileDialog
-app = QApplication(sys.argv)
+app = QApplication(list('0'))
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
