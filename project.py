@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QFileDialog #Оставь надежду, всяк сюда входяищй
 import re
 from pandas import read_excel, notna
-def parser(file_path:str): #функция для парса таблицы в нужном формате TODO: докрутить формат, починить парс станций
+def parser(file_path:str): #функция для парса таблицы в нужном формате
     file = read_excel(file_path).dropna(axis=1,how='all').dropna(how='all') #читает ексельку и сразу выпиливает пустые столбцы
     result={'data':{}, 'stations':{}} #словарь-мусоровоз для всех записей
     c = 0 #счётчик для станций
