@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QFileDialog #Оставь надежду, всяк сюда входяищй
-import re
-from pandas import read_excel, notna
+from re import search
+from pandas import Timedelta, Timestamp, read_excel, notna, to_datetime
+from requests import get
 def parser(file_path:str): #функция для парса таблицы в нужном формате
     file = read_excel(file_path).dropna(axis=1,how='all').dropna(how='all') #читает ексельку и сразу выпиливает пустые столбцы
     result={'data':{}, 'stations':{}} #словарь-мусоровоз для всех записей
@@ -19,10 +20,15 @@ def parser(file_path:str): #функция для парса таблицы в �
                           result['data']['dist']=int(file.iat[row,col][12:-3])
                     elif 'Время' in str(current_obj):
                           result['data']['time']=int(file.iat[row,col][7:-6])
-                    elif notna(re.search(r'[-+]?\d+',str(current_obj))) and len(str(current_obj))==6 and notna(file.iat[row,file.shape[1]-1]):#чудо написанное в полночь, стоящее исключительно на костылях
+                    elif notna(search(r'[-+]?\d+',str(current_obj))) and len(str(current_obj))==6 and notna(file.iat[row,file.shape[1]-1]):#чудо написанное в полночь, стоящее исключительно на костылях
                          result['stations'][str(c)]={'code':current_obj,'cords':str(file.iat[row,file.shape[1]-1]).split(',')}#запись в формате номер -> код и координаты
                          c+=1#увеличение счётчика
     return result#вывод
+
+def weather(time, lat, long): #функция для запроса к openweathermap
+      payload = {'lat': lat, 'lon': long, 'dt':((time-Timedelta(hours=3)) - Timestamp("1970-01-01")) // Timedelta('1s'),'appid':'заполнить', 'units':'metric'}  #запись аргументов для обращения
+      r = get('https://api.openweathermap.org/data/3.0/onecall/timemachine', params=payload) #get запрос серверу
+      return r #вывод ответа
 
 app = QApplication(list('0'))#костыль для отказа от лишних библиотек
 class MainWindow(QMainWindow):#Дальше живут драконы
