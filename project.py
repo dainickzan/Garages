@@ -67,8 +67,8 @@ class MainWindow(QMainWindow):#Дальше живут драконы
     def click(self):
          filename = str(QFileDialog.getOpenFileName())[2:-19]#Выбор файла и обрезание тех информации
          table(parser(filename),filename[:-4]+'_результаты.xlsx') #использование функций для чтения файла, рассчётов и записи в файл с названием в формате оригинальное название + _результаты
-         self.button.setText("Результаты сохранены в"+filename.split('/')[-1][:-4]+'_результаты.xlsx')#изменение текста кнопки
-         self.setWindowTitle("Полный путь до файла: "+filename[:-4]+'_результаты.xlsx')#изменение названия окна
+         self.button.setText("Результаты сохранены в "+filename.split('/')[-1][:-5]+'_результаты.xlsx')#изменение текста кнопки
+         self.setWindowTitle("Полный путь до файла: "+filename[:-5]+'_результаты.xlsx')#изменение названия окна
 
 window = MainWindow()#Инициализация окна
 window.show()#Отображение окна
